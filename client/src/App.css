@@ -1,0 +1,74 @@
+/* App Container */
+header {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f4f8;
+  margin: 0;
+}
+
+/* Styling for the SignIn Button */
+.sign-in-btn {
+  background-color: #4caf50; /* Green color */
+  color: white;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sign-in-btn:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+/* Styling for the User Button */
+.user-btn {
+  background-color: #007bff; /* Blue color */
+  color: white;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.user-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Optional: Centering the content */
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+header h1 {
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+
+/* For the Clerk UserButton */
+.clerk-user-button {
+  background-color: transparent;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.clerk-user-button:hover {
+  background-color: #f1f1f1;
+  border-color: #aaa;
+}
+
