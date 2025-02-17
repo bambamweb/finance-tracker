@@ -1,0 +1,72 @@
+.table th {
+   background-color: #3498db;
+   color: white;
+   font-size: 16px;
+}
+.table th,
+.table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+.table tbody tr:hover {
+    background-color: #e8f4e8;
+}
+
+.table{
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+}
+.input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color:#3498db;
+}
+
+.button-delete :hover {
+    background-color: #343cdb;
+}
+.button :hover {
+    background-color: #298eb9;
+}
+.button-delete {
+    background-color: #343cdb;
+    color: #ffffff;
+    border: none;
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.form-container,
+.list-container {
+    margin-bottom: 20px;
+}
+.label{
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+}
+h1,
+h2{
+    color: #2c3e50;
+    text-align: center;
+}
+
+.table-container{
+    margin: 20px;
+    overflow: auto;
+}

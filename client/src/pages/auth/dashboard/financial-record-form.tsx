@@ -14,7 +14,7 @@ export const FinancialRecordForm = () => {
           event.preventDefault();
 
           const newRecord ={
-            userId:user?.id ?? "",
+            userId: user?.id ?? "",
             date: new Date(),
             description: description,
             amount: parseFloat(amount),
@@ -22,7 +22,7 @@ export const FinancialRecordForm = () => {
             paymentMethod:paymentMethod
           };
 
-           addRecord(newRecord)
+           addRecord(newRecord);
           setDescription("");
           setAmount("");
           setCategory("");
@@ -32,7 +32,7 @@ export const FinancialRecordForm = () => {
       <div className="form-container">
         <form onSubmit={handleSubmit}>
             <div className="form-field">
-            <label>Description</label>
+            <label>Description:</label>
             <input type="text" required className="input" value={description} onChange={(e) =>setDescription(e.target.value)}/>
             </div>
 
@@ -54,7 +54,7 @@ export const FinancialRecordForm = () => {
               </div>
 
             <div className="form-field">
-             <label>Payment Method</label>
+             <label>Payment Method:</label>
              <select required className="input" value={paymentMethod} onChange={(e) =>setPaymentMethod(e.target.value)}>
               <option  value="">select a pament method</option>
               <option  value="credit card">Credit Card</option>
@@ -62,7 +62,7 @@ export const FinancialRecordForm = () => {
               <option  value="Bank transfer">Bank Transfer</option>
              </select>
             </div>
-            <button type="submit" className="button">
+            <button type="submit" className="button" >
               Add Record
             </button>
         </form>
