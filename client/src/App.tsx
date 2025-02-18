@@ -1,22 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// eslint-disable-file no-use-before-define 
+// eslint-disable-file no-use-before-define
 
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"; // Fixed Link import
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Dashboard } from "./pages/auth/dashboard";
 import { Auth } from "./pages/auth";
 import { FinancialRecordsProvider } from "./contexts/financial-record-context";
-import React, { Component, } from "react";
-import {SignedIn,UserButton,} from "@clerk/clerk-react";
-
-
-
+import React, { Component } from "react";
+import { SignedIn, UserButton } from "@clerk/clerk-react";
 
 // Define your error boundary component
-class ErrorBoundary extends Component {
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, { hasError: boolean }> {
   state = { hasError: false };
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError(_error: Error) {
     return { hasError: true };
   }
 
@@ -32,16 +33,15 @@ class ErrorBoundary extends Component {
   }
 }
 
-
 function App() {
   return (
     <ErrorBoundary>
       <Router>
         <div className="app-container">
           <div className="navbar">
-            <Link to="/">Dashboard</Link> 
+            <Link to="/">Dashboard</Link>
             <SignedIn>
-              <UserButton  showName /> 
+              <UserButton showName />
             </SignedIn>
           </div>
           <FinancialRecordsProvider>
