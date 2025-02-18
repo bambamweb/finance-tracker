@@ -1,9 +1,9 @@
 import { useMemo,useState } from "react";
 import { FinancialRecord,useFinancialRecords } from "../../../contexts/financial-record-context";
-import {useTable,Column, CellProps,Row} from 'react-table';
+import {useTable,Column, CellProps} from 'react-table';
 
 interface EditableCellProps extends CellProps<FinancialRecord> {
-    updateRecord: (rowIndex: number, columnId: string, value: any) => void;
+    updateRecord: (rowIndex: number, columnId: string, value: string | number) => void;
     editable: boolean;
 }
 
@@ -34,7 +34,7 @@ const EditableCell: React.FC<EditableCellProps> = ({value: initialValue, row,col
 
 export const FinancialRecordList = () => {
     const {records,updateRecord,deleteRecord} = useFinancialRecords();
-    const updateCellRecord = (rowIndex: number, columnId: string, value: any) => {
+    const updateCellRecord = (rowIndex: number, columnId: string, value: string | number) => {
         const id =records[rowIndex]._id;
         updateRecord(id ?? "", {...records[rowIndex],[columnId]: value});
     }
@@ -42,29 +42,29 @@ export const FinancialRecordList = () => {
     const columns : Array<Column<FinancialRecord>>= useMemo(()  => [
         {
             Header : "Description",
-            accessor: "desription",
+            accessor: "description",
             Cell: (props) => (
-                <EditableCell {...props} updateRecord={() => null} editable = {true}/>
+                <EditableCell {...props} updateRecord={updateCellRecord} editable = {true}/>
             ),
         },
 
         {
             Header : "Amount",
-            accessor: "Amount",
+            accessor: "amount",
             Cell: (props) => (
                 <EditableCell {...props} updateRecord={updateCellRecord} editable = {true}/>
             ),
         },
         {
             Header : "Category",
-            accessor: "Category",
+            accessor: "category",
             Cell: (props) => (
                 <EditableCell {...props} updateRecord={updateCellRecord} editable = {true}/>
             ),
         },
         {
             Header : "Payment Method",
-            accessor: "PaymentMethod",
+            accessor: "paymentMethod",
             Cell: (props) => (
                 <EditableCell {...props} updateRecord={updateCellRecord} editable = {true}/>
             ),
@@ -109,14 +109,14 @@ export const FinancialRecordList = () => {
                     </tr>
                 ))}
             </thead>
-            <body {...getTableProps()}>
-                {rows.map((row,idx) => {
+            <tbody {...getTableBodyProps()}>
+                {rows.map((row) => {
                        prepareRow(row);
                        return <tr {...row.getRowProps()}> {row.cells.map((cell) => (
                         <td {...cell.getCellProps()}>{cell.render("cell")}</td>
                        ))}</tr>;
                 })}
-            </body>
+            </tbody>
         </table>
         </div>
 );

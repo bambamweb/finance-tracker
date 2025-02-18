@@ -15,12 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const financial_record_1 = __importDefault(require("../schema/financial-record"));
 const router = express_1.default.Router();
-router.get("/getAllByUserID/:userId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// GET all records by userId
+router.get("/getAllByUserID:userId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
         const records = yield financial_record_1.default.find({ userId: userId });
         if (records.length === 0) {
-            return res.status(404).send("no records found for the user.");
+            res.status(404).send("No records found for the user.");
         }
         res.status(200).send(records);
     }
@@ -28,6 +29,7 @@ router.get("/getAllByUserID/:userId", (req, res) => __awaiter(void 0, void 0, vo
         res.status(500).send(err);
     }
 }));
+// POST a new record
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const newRecordBody = req.body;
@@ -39,25 +41,27 @@ router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).send(err);
     }
 }));
+// PUT update record by ID
 router.put("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.id;
         const newRecordBody = req.body;
         const record = yield financial_record_1.default.findByIdAndUpdate(id, newRecordBody, { new: true });
         if (!record)
-            return res.status(404).send();
+            res.status(404).send();
         res.status(200).send(record);
     }
     catch (err) {
         res.status(500).send(err);
     }
 }));
+// DELETE record by ID
 router.delete("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const id = req.params.id;
         const record = yield financial_record_1.default.findByIdAndDelete(id);
         if (!record)
-            return res.status(404).send();
+            res.status(404).send();
         res.status(200).send(record);
     }
     catch (err) {

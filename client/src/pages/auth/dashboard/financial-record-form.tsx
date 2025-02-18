@@ -1,6 +1,8 @@
+
+
 import { useState } from "react"
 import {useUser} from "@clerk/clerk-react"
-import { useFinancialRecords } from "../../../contexts/financial-record-context"
+import { useFinancialRecords, FinancialRecord } from "../../../contexts/financial-record-context"
 
 export const FinancialRecordForm = () => {
        const [description, setDescription] = useState<string>("");
@@ -13,7 +15,7 @@ export const FinancialRecordForm = () => {
        const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
           event.preventDefault();
 
-          const newRecord ={
+          const newRecord: FinancialRecord ={
             userId: user?.id ?? "",
             date: new Date(),
             description: description,

@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 interface FinancialRecord {
-    userID: string;
+    userID: String;
     date: Date;
-    description: string;
+    description: String;
     amount:number;
     category: String;
-    paymentMethod:string;
+    paymentMethod:String;
 }
 
 const financialRecordSchema = new mongoose.Schema<FinancialRecord>({

@@ -5,7 +5,7 @@ import financialRecordRouter from "./routes/financial-record";
 import cors from "cors";
 
 const app: Express = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 4000;
 
 app.use(express.json());
 app.use(
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use("/financial-records", financialRecordRouter);
+app.use("/financial-record", financialRecordRouter);
 
 app.listen(port,() => {
     console.log(`Server running on port ${port}`)
