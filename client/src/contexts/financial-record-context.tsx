@@ -1,3 +1,4 @@
+// @typescript-eslint/no-unused-vars
 import { useUser } from "@clerk/clerk-react";
 import { createContext, useContext, useEffect, useState } from "react";
 
