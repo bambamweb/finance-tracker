@@ -9,7 +9,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const financial_record_1 = __importDefault(require("./routes/financial-record"));
 const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     origin: "http://localhost:5173",

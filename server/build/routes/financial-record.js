@@ -16,7 +16,7 @@ const express_1 = __importDefault(require("express"));
 const financial_record_1 = __importDefault(require("../schema/financial-record"));
 const router = express_1.default.Router();
 // GET all records by userId
-router.get("/getAllByUserID:userId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/getAllByUserID/:userId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
         const records = yield financial_record_1.default.find({ userId: userId });

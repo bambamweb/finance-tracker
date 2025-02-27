@@ -1,11 +1,11 @@
 // PWD:VXLFDMz1yx0J7W19
 import express, {Express} from "express";
 import mongoose from "mongoose";
-import financialRecordRouter from "./routes/financial-record";
+import financialRecordRouter from "./routes/financial-records";
 import cors from "cors";
 
 const app: Express = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use("/financial-record", financialRecordRouter);
+app.use("/financial-records", financialRecordRouter);
 
 app.listen(port,() => {
     console.log(`Server running on port ${port}`)

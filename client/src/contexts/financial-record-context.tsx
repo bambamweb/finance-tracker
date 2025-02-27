@@ -1,6 +1,5 @@
-// @typescript-eslint/no-unused-vars
 import { useUser } from "@clerk/clerk-react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 
 export interface FinancialRecord {
   _id?: string;
@@ -17,6 +16,8 @@ interface FinancialRecordsContextType {
   addRecord: (record: FinancialRecord) => void;
   updateRecord: (id: string, newRecord: FinancialRecord) => void;
   deleteRecord: (id: string) => void;
+  loading: boolean;
+  error: string | null;
 }
 
 export const FinancialRecordsContext = createContext<
@@ -29,98 +30,127 @@ export const FinancialRecordsProvider = ({
   children: React.ReactNode;
 }) => {
   const [records, setRecords] = useState<FinancialRecord[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const { user } = useUser();
 
-  const fetchRecords = async () => {
+  const fetchRecords = useCallback(async () => {
     if (!user) return;
-    const response = await fetch(
-      `http://localhost:4000/financial-record/getAllByUserID/${user.id}`
-    );
+    setLoading(true);
+    setError(null);
 
-    if (response.ok) {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/financial-records/getAllByUserID/${user.id}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const records = await response.json();
-      console.log(records);
       setRecords(records);
+    } catch (err) {
+      setError("Failed to fetch records");
+      console.error("Error fetching records:", err);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     fetchRecords();
-  }, [user]);
+  }, [fetchRecords]);
 
   const addRecord = async (record: FinancialRecord) => {
-    const response = await fetch("http://localhost:4000/financial-record", {
-      method: "POST",
-      body: JSON.stringify(record),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
+    if (!user) {
+      console.error('User is not defined');
+      return;
+    }
+  
     try {
-      if (response.ok) {
-        const newRecord = await response.json();
-        setRecords((prev) => [...prev, newRecord]);
+      const recordWithUserId = {
+        ...record,
+        userId: user.id,
+      };
+  
+      console.log('Sending payload:', recordWithUserId); // Log the payload
+  
+      const response = await fetch('http://localhost:3000/financial-records', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(recordWithUserId),
+      });
+  
+      if (!response.ok) {
+        const errorResponse = await response.json(); // Log the error response
+        console.error('Error response:', errorResponse);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+  
+      const newRecord = await response.json();
+      setRecords((prev) => [...prev, newRecord]);
     } catch (err) {
-      console.error('Error adding record:', err)
+      console.error('Error adding record:', err);
+      if (err instanceof Error) {
+        console.error('Error details:', err.message);
+      }
     }
   };
 
-  const updateRecord = async (id: string, newRecord: FinancialRecord) => {
-    const response = await fetch(
-      `http://localhost:4000/financial-record/${id}`,
-      {
-        method: "PUT",
-        body: JSON.stringify(newRecord),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+  
 
+  const updateRecord = async (id: string, newRecord: FinancialRecord) => {
     try {
-      if (response.ok) {
-        const newRecord = await response.json();
-        setRecords((prev) =>
-          prev.map((record) => {
-            if (record._id === id) {
-              return newRecord;
-            } else {
-              return record;
-            }
-          })
-        );
+      const response = await fetch(
+        `http://localhost:3000/financial-records/${id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(newRecord),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const updatedRecord = await response.json();
+      setRecords((prev) =>
+        prev.map((record) => (record._id === id ? updatedRecord : record))
+      );
     } catch (err) {
-      console.error('Error updating record:', err)
+      console.error("Error updating record:", err);
     }
   };
 
   const deleteRecord = async (id: string) => {
-    const response = await fetch(
-      `http://localhost:4000/financial-record/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
-
     try {
-      if (response.ok) {
-        const deletedRecord = await response.json();
-        setRecords((prev) =>
-          prev.filter((record) => record._id !== deletedRecord._id)
-        );
+      const response = await fetch(
+        `http://localhost:3000/financial-records/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const deletedRecord = await response.json();
+      setRecords((prev) => prev.filter((record) => record._id !== deletedRecord._id));
     } catch (err) {
-    
-      console.error('Error deleting record:', err);
+      console.error("Error deleting record:", err);
     }
   };
 
   return (
     <FinancialRecordsContext.Provider
-      value={{ records, addRecord, updateRecord, deleteRecord }}
+      value={{ records, addRecord, updateRecord, deleteRecord, loading, error }}
     >
       {children}
     </FinancialRecordsContext.Provider>
